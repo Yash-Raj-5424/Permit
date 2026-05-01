@@ -40,9 +40,19 @@ public class PaginationExampleActivity extends AppCompatActivity {
     EdgeToEdge.enable(this);
     setContentView(R.layout.activity_pagination_example);
 
-    ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+    View mainView = findViewById(R.id.main);
+    int initialPaddingLeft = mainView.getPaddingLeft();
+    int initialPaddingTop = mainView.getPaddingTop();
+    int initialPaddingRight = mainView.getPaddingRight();
+    int initialPaddingBottom = mainView.getPaddingBottom();
+
+    ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
       Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-      v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+      v.setPadding(
+          initialPaddingLeft + systemBars.left,
+          initialPaddingTop + systemBars.top,
+          initialPaddingRight + systemBars.right,
+          initialPaddingBottom + systemBars.bottom);
       return insets;
     });
 
