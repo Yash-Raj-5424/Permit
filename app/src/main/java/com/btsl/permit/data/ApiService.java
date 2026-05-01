@@ -1,7 +1,6 @@
 package com.btsl.permit.data;
 
 
-import com.btsl.permit.data.datamodel.PageInfo;
 import com.btsl.permit.data.datamodel.PaginatedResponse;
 import com.btsl.permit.data.datamodel.Post;
 import com.btsl.permit.data.datamodel.User;
