@@ -4,7 +4,6 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import com.btsl.permit.data.ApiService;
 import com.btsl.permit.data.RetrofitClient;
-import com.btsl.permit.data.datamodel.PageInfo;
 import com.btsl.permit.data.datamodel.PaginatedResponse;
 import com.btsl.permit.data.datamodel.Post;
 import com.btsl.permit.data.datamodel.User;
