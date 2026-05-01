@@ -4,6 +4,8 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import com.btsl.permit.data.ApiService;
 import com.btsl.permit.data.RetrofitClient;
+import com.btsl.permit.data.datamodel.PageInfo;
+import com.btsl.permit.data.datamodel.PaginatedResponse;
 import com.btsl.permit.data.datamodel.Post;
 import com.btsl.permit.data.datamodel.User;
 import java.util.List;
@@ -122,5 +124,85 @@ public class UserRepository {
     });
 
     return postsLiveData;
+  }
+
+  // ============== PAGINATION METHODS ==============
+
+  // Get users with cursor-based pagination
+  public MutableLiveData<PaginatedResponse<User>> getUsersPaginated(String cursor, int limit) {
+    MutableLiveData<PaginatedResponse<User>> paginatedLiveData = new MutableLiveData<>();
+
+    apiService.getUsersPaginated(cursor, limit).enqueue(new Callback<PaginatedResponse<User>>() {
+      @Override
+      public void onResponse(Call<PaginatedResponse<User>> call, Response<PaginatedResponse<User>> response) {
+        if (response.isSuccessful() && response.body() != null) {
+          paginatedLiveData.setValue(response.body());
+          Log.d(TAG, "Users paginated fetched successfully: " + response.body().getData().size());
+        } else {
+          paginatedLiveData.setValue(null);
+          Log.e(TAG, "Failed to fetch paginated users: " + response.code());
+        }
+      }
+
+      @Override
+      public void onFailure(Call<PaginatedResponse<User>> call, Throwable t) {
+        paginatedLiveData.setValue(null);
+        Log.e(TAG, "Error fetching paginated users: " + t.getMessage());
+      }
+    });
+
+    return paginatedLiveData;
+  }
+
+  // Get posts with cursor-based pagination
+  public MutableLiveData<PaginatedResponse<Post>> getPostsPaginated(String cursor, int limit) {
+    MutableLiveData<PaginatedResponse<Post>> paginatedLiveData = new MutableLiveData<>();
+
+    apiService.getPostsPaginated(cursor, limit).enqueue(new Callback<PaginatedResponse<Post>>() {
+      @Override
+      public void onResponse(Call<PaginatedResponse<Post>> call, Response<PaginatedResponse<Post>> response) {
+        if (response.isSuccessful() && response.body() != null) {
+          paginatedLiveData.setValue(response.body());
+          Log.d(TAG, "Posts paginated fetched successfully: " + response.body().getData().size());
+        } else {
+          paginatedLiveData.setValue(null);
+          Log.e(TAG, "Failed to fetch paginated posts: " + response.code());
+        }
+      }
+
+      @Override
+      public void onFailure(Call<PaginatedResponse<Post>> call, Throwable t) {
+        paginatedLiveData.setValue(null);
+        Log.e(TAG, "Error fetching paginated posts: " + t.getMessage());
+      }
+    });
+
+    return paginatedLiveData;
+  }
+
+  // Get posts by user ID with cursor-based pagination
+  public MutableLiveData<PaginatedResponse<Post>> getPostsByUserIdPaginated(int userId, String cursor, int limit) {
+    MutableLiveData<PaginatedResponse<Post>> paginatedLiveData = new MutableLiveData<>();
+
+    apiService.getPostsByUserPaginated(userId, cursor, limit).enqueue(new Callback<PaginatedResponse<Post>>() {
+      @Override
+      public void onResponse(Call<PaginatedResponse<Post>> call, Response<PaginatedResponse<Post>> response) {
+        if (response.isSuccessful() && response.body() != null) {
+          paginatedLiveData.setValue(response.body());
+          Log.d(TAG, "User posts paginated fetched: " + response.body().getData().size());
+        } else {
+          paginatedLiveData.setValue(null);
+          Log.e(TAG, "Failed to fetch paginated user posts: " + response.code());
+        }
+      }
+
+      @Override
+      public void onFailure(Call<PaginatedResponse<Post>> call, Throwable t) {
+        paginatedLiveData.setValue(null);
+        Log.e(TAG, "Error fetching paginated user posts: " + t.getMessage());
+      }
+    });
+
+    return paginatedLiveData;
   }
 }
